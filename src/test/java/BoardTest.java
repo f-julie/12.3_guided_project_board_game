@@ -2,26 +2,72 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class BoardTest {
 
     private Board game;
+
+    @Mock
+    private Region reg;
+
+    @InjectMocks
+    private Board gameWithRegion = new Board(8,8);
+
+    @Mock
+    private Board mockedGame;
 
     @BeforeEach
     void setUp() {
         game = new Board(8, 8);
     }
 
+    /*
     @Test
     void insertPieceA(){
         Piece expected = Piece.A;
 
         game.insertPiece(expected, 0, 0);
-
+        Mockito.verify(game).insertPiece(expected, 0, 0);
         Piece actual = game.get(0, 0);
         assertEquals(expected, actual);
+    }
+
+     */
+
+    @Test
+    void insertPieceA() {
+        Piece expected = Piece.A;
+
+        game.insertPiece(expected, 0, 0);
+        Piece actual = game.get(0,0);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void whenInsertPieceA_thenReturnPieceA() {
+        Piece expected = Piece.A;
+
+        mockedGame.insertPiece(expected, 0,0);
+        Mockito.verify(mockedGame).insertPiece(expected,0,0);
+        assertEquals(expected, mockedGame.get(0,0));
+
+        Mockito.when(mockedGame.get(0,0).thenReturn(expected));
+        assertEquals(expected, mockedGame.get(0,0));
+    }
+
+    @Test
+    void testRegion() {
+        Mockito.when(reg.getArea()).thenReturn(1);
+        assertEquals(reg.getArea(), 1);
+        assertEquals(gameWithRegion.regionAreaEffect(), 64);
     }
 
     @Nested

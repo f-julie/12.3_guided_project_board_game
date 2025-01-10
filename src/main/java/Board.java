@@ -2,6 +2,8 @@ public class Board {
     private int width, height;
     private Piece[][] board;
 
+    private Region region;
+
     public Board(int w, int  h) {
         this.board = new Piece[w][h];
         this.width = w;
@@ -10,6 +12,14 @@ public class Board {
 
     public Piece get(int x, int y) {
         return this.board[x][y];
+    }
+
+    public void setRegion(Region reg) {
+        this.region = reg;
+    }
+
+    public int regionAreaEffect() {
+        return this.width * this.height * this.region.getArea();
     }
 
     public boolean insertPiece(Piece newPiece, int insertX, int insertY) {
